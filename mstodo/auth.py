@@ -1,8 +1,8 @@
 import logging
 import atexit
 import msal
-from workflow import PasswordNotFound
 from mstodo import config, __version__, __title__
+from mstodo.exceptions import PasswordNotFound
 from mstodo.util import wf_wrapper
 
 log = logging.getLogger(__name__)

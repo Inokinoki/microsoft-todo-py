@@ -1,7 +1,6 @@
 import logging
 
 from datetime import date, datetime, timedelta
-from workflow import Workflow
 from mstodo import __githubslug__, __version__
 
 _workflow = None
@@ -17,24 +16,6 @@ SYMBOLS = {
 
 def wf_wrapper():
     global _workflow
-
-    if _workflow is None:
-        _workflow = Workflow(
-            capture_args=False,
-            update_settings={
-                'github_slug': __githubslug__,
-                'version':__version__,
-                # Check for updates daily
-                #@TODO: check less frequently as the workflow becomes more
-                # stable
-                'frequency': 1,
-                'prerelease': '-' in __version__
-            }
-        )
-
-        # Override Alfred PyWorkflow logger output configuration
-        _workflow.logger = logging.getLogger('workflow')
-
     return _workflow
 
 def parsedatetime_calendar():

@@ -3,9 +3,6 @@ import time
 import logging
 from datetime import datetime
 
-from workflow.notify import notify
-from workflow.background import is_running
-
 from mstodo.util import wf_wrapper
 
 log = logging.getLogger(__name__)
@@ -18,25 +15,7 @@ def sync(background=False):
     # If a sync is already running, wait for it to finish. Otherwise, store
     # the current pid in alfred-workflow's pid cache file
     if not background:
-        if is_running('sync'):
-            wait_count = 0
-            while is_running('sync'):
-                time.sleep(.25)
-                wait_count += 1
-
-                if wait_count == 2:
-                    notify(
-                        title='Please wait...',
-                        message='The workflow is making sure your tasks are up-to-date'
-                    )
-
-            return False
-
         log.info("Running manual sync")
-        notify(
-            title='Manual sync initiated',
-            message='The workflow is making sure your tasks are up-to-date'
-        )
 
         pidfile = wf.cachefile('sync.pid')
         with open(pidfile, 'w', encoding="utf-8") as file_obj:
@@ -76,10 +55,6 @@ def sync(background=False):
     except user.User.DoesNotExist:
         first_sync = True
         wf.cache_data('last_sync',datetime.utcnow())
-        notify(
-            title='Please wait...',
-            message='The workflow is syncing tasks for the first time'
-        )
 
     user.User.sync()
     taskfolder.TaskFolder.sync()
@@ -94,35 +69,7 @@ def sync(background=False):
 
     if first_sync or not background:
         log.info(f"Sync completed at {sync_completion_time}")
-        notify(
-            title='Sync has completed',
-            message='All of your tasks are now available for browsing'
-        )
 
     wf.cache_data('last_sync',sync_completion_time)
     log.debug(f"This sync time: {sync_completion_time}")
     return True
-
-
-def background_sync():
-    from workflow.background import run_in_background
-    task_id = 'sync'
-    log.debug(f"Last sync time was: {str(wf.cached_data('last_sync', max_age=0))}")
-
-    # Only runs if another sync is not already in progress
-    run_in_background(task_id, [
-        '/usr/bin/env',
-        'python3',
-        wf.workflowfile('alfred_mstodo_workflow.py'),
-        'pref sync background',
-        '--commit'
-    ])
-
-
-def background_sync_if_necessary(seconds=30):
-    last_sync = wf.cached_data('last_sync', max_age=0)
-
-    # Avoid syncing on every keystroke, background_sync will also prevent
-    # multiple concurrent syncs
-    if last_sync is None or (datetime.utcnow() - last_sync).total_seconds() > seconds:
-        background_sync()
