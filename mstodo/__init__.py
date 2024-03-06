@@ -10,3 +10,5 @@ def get_version():
 
 def get_github_slug():
     return __githubslug__
+
+from mstodo.mstodo import MSToDo
