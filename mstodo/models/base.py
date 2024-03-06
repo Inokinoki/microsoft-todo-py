@@ -3,15 +3,11 @@ import logging
 import time
 
 from dateutil import parser
-from peewee import (DateField, DateTimeField, ForeignKeyField, Model,
-                    SqliteDatabase, TimeField)
 
 from mstodo.util import wf_wrapper
 
 log = logging.getLogger(__name__)
 
-db = SqliteDatabase(wf_wrapper().datadir + '/mstodo.db')
-# This writes a SQLiteDB to ~/Library/Application Support/Alfred/Workflow Data/<this workflow>
 
 def _balance_keys_for_insert(values):
     all_keys = set()
@@ -27,7 +23,7 @@ def _balance_keys_for_insert(values):
 
     return balanced_values
 
-class BaseModel(Model):
+class BaseModel:
     """
     Extends the Peewee model class and refines it for MS ToDo API structures.
     Holds methods to unpack APIs to database models, update data and perform

@@ -1,10 +1,9 @@
 from datetime import datetime
 
 from dateutil.tz import tzutc
-from peewee import DateTimeField
 from mstodo.util import utc_to_local
 
-class DateTimeUTCField(DateTimeField):
+class DateTimeUTCField:
     """
     Extends Peewee's datetime field with timezone awareness
     """

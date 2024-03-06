@@ -1,7 +1,5 @@
 import re
 
-from peewee import CharField, IntegerField
-
 from mstodo.models.base import BaseModel
 
 _hashtag_pattern = re.compile(r'(?<=\s)#\S+', re.UNICODE)
@@ -13,9 +11,6 @@ class Hashtag(BaseModel):
     """
     Extends the Base class and refines it for the Hashtag data structure 
     """
-    id = CharField(primary_key=True)
-    tag = CharField()
-    revision = IntegerField(default=0)
 
     @classmethod
     def sync(cls):

@@ -1,7 +1,5 @@
 from datetime import time, timedelta
 
-from workflow import Workflow
-
 DEFAULT_TASKFOLDER_MOST_RECENT = 'most_recent'
 
 AUTOMATIC_REMINDERS_KEY = 'automatic_reminders'
@@ -18,9 +16,6 @@ SHOW_COMPLETED_TASKS_KEY = 'show_completed_tasks'
 UPCOMING_DURATION_KEY = 'upcoming_duration'
 COMPLETED_DURATION_KEY = 'completed_duration'
 DATE_LOCALE_KEY = 'date_locale'
-
-# Using a new object to avoid cyclic imports between mstodo.util and this file
-wf = Workflow()
 
 class Preferences():
     """

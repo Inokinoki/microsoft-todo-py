@@ -4,9 +4,6 @@ from datetime import date, timedelta, datetime
 import logging
 import time
 
-from peewee import (BooleanField, CharField, ForeignKeyField, IntegerField,
-                    PeeweeException, TextField)
-
 from mstodo.models.fields import DateTimeUTCField
 from mstodo.models.base import BaseModel
 from mstodo.models.taskfolder import TaskFolder
@@ -46,32 +43,10 @@ _secondary_api_fields = [
     'assignedTo'
 ]
 
-class Task(BaseModel):
+class Task:
     """
     Extends the Base class and refines it for the Task data structure 
     """
-    id = CharField(primary_key=True)
-    list = ForeignKeyField(TaskFolder,index=True, related_name='tasks') #@TODO check related name syntax
-    createdDateTime = DateTimeUTCField()
-    lastModifiedDateTime = DateTimeUTCField()
-    changeKey = CharField()
-    hasAttachments = BooleanField(null=True)
-    importance = CharField(index=True, null=True)
-    isReminderOn = BooleanField(null=True)
-    owner = ForeignKeyField(User, related_name='created_tasks', null=True)
-    assignedTo = ForeignKeyField(User, related_name='assigned_tasks', null=True)
-    sensitivity = CharField(index=True,null=True)
-    status = CharField(index=True)
-    title = TextField(index=True)
-    completedDateTime = DateTimeUTCField(index=True, null=True)
-    dueDateTime = DateTimeUTCField(index=True, null=True)
-    reminderDateTime = DateTimeUTCField(index=True, null=True)
-    startDateTime = DateTimeUTCField(index=True, null=True)
-    body_contentType = TextField(null=True)
-    body_content = TextField(null=True)
-    recurrence_type = CharField(null=True)
-    recurrence_count = IntegerField(null=True)
-    # "categories": [],
 
     @staticmethod
     def transform_datamodel(tasks_data):

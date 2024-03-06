@@ -1,8 +1,6 @@
 import re
 from datetime import date, datetime, timedelta
 
-from workflow import MATCH_ALL, MATCH_ALLCHARS
-
 from mstodo.models.preferences import Preferences, DEFAULT_TASKFOLDER_MOST_RECENT
 from mstodo.util import parsedatetime_calendar, wf_wrapper
 

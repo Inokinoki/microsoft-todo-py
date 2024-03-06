@@ -1,8 +1,6 @@
 import logging
 import time
 
-from peewee import (BooleanField, CharField, PeeweeException)
-
 from mstodo.models.base import BaseModel
 from mstodo.util import wf_wrapper
 
@@ -12,11 +10,6 @@ class TaskFolder(BaseModel):
     """
     Extends the Base class and refines it for the Taskfolder data structure 
     """
-    id = CharField(primary_key=True)
-    changeKey = CharField()
-    title = CharField(index=True)
-    isDefaultFolder = BooleanField()
-    parentGroupKey = CharField()
 
     @classmethod
     def sync(cls):
