@@ -1,7 +1,8 @@
 import logging
 import atexit
 import msal
-from mstodo import config, __version__, __title__
+from examples import config
+from mstodo import __version__, __title__
 from mstodo.exceptions import PasswordNotFound
 from mstodo.util import wf_wrapper
 

@@ -10,7 +10,6 @@ wf = wf_wrapper()
 
 def sync(background=False):
     from mstodo.models import base, task, user, taskfolder, hashtag
-    from peewee import OperationalError
 
     # If a sync is already running, wait for it to finish. Otherwise, store
     # the current pid in alfred-workflow's pid cache file

@@ -1,4 +1,3 @@
-__title__ = 'Microsoft To Do in Python'
 __version__ = '0.2.2'
 __author__ = 'Johan de Beurs, Ian Paterson, Inoki'
 __licence__ = 'MIT'

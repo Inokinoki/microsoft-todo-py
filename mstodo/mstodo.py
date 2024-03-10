@@ -1,17 +1,10 @@
-import msal
-
 from mstodo import constant
 
 class MSToDo:
-    def __init__(self, app_name=constant.APP_TITLE, app_version=constant.APP_VERSION):
-        # Set up msal application for this session
-        self._token_cache = msal.SerializableTokenCache()
-        self._app = msal.PublicClientApplication(
-            client_id=constant.MS_AZURE_CLIENT_ID,
-            token_cache=self._token_cache,
-            app_name=app_name,
-            app_version=app_version,
-        )
+    def __init__(self, base_url=constant.MS_TODO_API_BASE_URL, page_size=1000):
+        # Set up request configs
+        self._base_url = base_url
+        self._page_size = page_size
 
         # Setup caches for tasks
         self._task_folders_cache = []

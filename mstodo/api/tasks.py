@@ -3,7 +3,7 @@ import time
 import datetime
 from dateutil import tz
 
-from mstodo import config
+from examples import config
 import mstodo.api.base as api
 
 log = logging.getLogger(__name__)

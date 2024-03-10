@@ -9,5 +9,3 @@ MS_TODO_SCOPE =  [
 ]
 MS_TODO_API_BASE_URL =  "https://graph.microsoft.com/beta"
 MS_TODO_PAGE_SIZE = '1000'
-APP_TITLE = mstodo.__title__
-APP_VERSION = mstodo.__version__

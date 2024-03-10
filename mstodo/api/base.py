@@ -1,8 +1,8 @@
 import json
 import requests
 
-from mstodo import config
-from mstodo.auth import oauth_token
+from examples import config
+from examples.auth import oauth_token
 
 def _request_headers():
     _oauth_token = oauth_token()
