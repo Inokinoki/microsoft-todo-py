@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class MSToDo:
-    def __init__(self, base_url=constant.MS_TODO_API_BASE_URL, page_size=1000):
+    def __init__(self, base_url=constant.MS_TODO_API_BASE_URL, token=None, page_size=1000):
         # Set up request configs
         self._base_url = base_url
         self._page_size = page_size
@@ -26,8 +26,7 @@ class MSToDo:
         self._token = None
         self._session = requests.Session(base_url=self._base_url)
         self._session.headers['Content-Type'] = 'application/json'
-        if self._token:
-            self._session.headers['Authorization'] = f"Bearer {self._token}"
+        self.auth(self._token)
 
     def _get(self, path, params=None):
         return self._session.get(path, params=params)
@@ -273,3 +272,8 @@ class MSToDo:
     def user(self):
         req = self._get('me')
         return req.json()
+
+    def auth(self, token):
+        self._token = token
+        if self._token:
+            self._session.headers['Authorization'] = f"Bearer {self._token}"
