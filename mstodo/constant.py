@@ -7,5 +7,5 @@ MS_TODO_SCOPE =  [
     "Tasks.ReadWrite.Shared",
     "MailboxSettings.ReadWrite"
 ]
-MS_TODO_API_BASE_URL =  "https://graph.microsoft.com/beta"
+MS_TODO_API_BASE_URL =  "https://graph.microsoft.com/beta/"
 MS_TODO_PAGE_SIZE = '1000'
