@@ -2,7 +2,7 @@ import datetime
 from dateutil import tz
 import json
 from requests import codes
-import requests
+from requests_toolbelt import sessions
 import time
 
 from mstodo import constant
@@ -23,8 +23,8 @@ class MSToDo:
         self._task_folders_cache = []
         self._tasks_cache = []
 
-        self._token = None
-        self._session = requests.Session(base_url=self._base_url)
+        self._token = token
+        self._session = sessions.BaseUrlSession(base_url=base_url)
         self._session.headers['Content-Type'] = 'application/json'
         self.auth(self._token)
 
