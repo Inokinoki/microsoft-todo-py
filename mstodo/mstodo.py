@@ -7,6 +7,7 @@ import time
 
 from mstodo import constant
 from mstodo.util import set_due_date, set_reminder_date, set_recurrence
+from mstodo.models import Task, TaskFolder
 
 import logging
 
@@ -61,7 +62,7 @@ class MSToDo:
             query += ''
         return query
 
-    def taskfolders(self, order='display', task_counts=False):
+    def taskfolders_raw(self, order='display', task_counts=False):
         start = time.time()
         query = f"?$top={self._page_size}&count=true"
         next_link = f"me/outlook/taskFolders{query}"
@@ -81,7 +82,7 @@ class MSToDo:
 
         return taskfolders
 
-    def taskfolder(self, _id, task_counts=False):
+    def taskfolder_raw(self, _id, task_counts=False):
         res = self._session.get(f"me/outlook/taskFolders/{_id}")
         info = res.json()
 
@@ -90,30 +91,15 @@ class MSToDo:
 
         return info
 
-    def taskfolder_tasks_count(self, _id):
-        info = {}
-        req = self._get(f"taskFolders/{_id}/tasks?$count=true&$top=1&$filter=status+ne+'completed'")
-        info['uncompleted_count'] = req.json()['@odata.count']
-        req = self._get(f"taskFolders/{_id}/tasks?$count=true&$top=1&$filter=status+eq+'completed'")
-        info['completed_count'] = req.json()['@odata.count']
-
-        return info
-
-    def update_taskfolder_with_tasks_count(self, info):
-        counts = self.taskfolder_tasks_count(info['id'])
-        info['completed_count'] = counts.get('completed_count', 0)
-        info['uncompleted_count'] = counts.get('uncompleted_count', 0)
-        return info
-
-    def create_taskfolder(self, title):
+    def create_taskfolder_raw(self, title):
         req = self._post('me/outlook/taskFolders', {'name': title})
         return req
 
-    def delete_taskfolder(self, _id):
+    def delete_taskfolder_raw(self, _id):
         req = self._delete('me/outlook/taskFolders/' + _id)
         return req.status_code == codes.no_content
 
-    def tasks(self, taskfolder_id=None, completed=None, dt=None, afterdt=None, fields=None):
+    def tasks_raw(self, taskfolder_id=None, completed=None, dt=None, afterdt=None, fields=None):
         if fields is None:
             fields = []
         if taskfolder_id is not None:
@@ -140,13 +126,13 @@ class MSToDo:
 
         return task_data
 
-    def task(self, task_id):
+    def task_raw(self, task_id):
         req = self._get('me/outlook/tasks/' + task_id)
         info = req.json()
 
         return info
 
-    def create_task(self, taskfolder_id, title, assignee_id=None, recurrence_type=None,
+    def create_task_raw(self, taskfolder_id, title, assignee_id=None, recurrence_type=None,
                     recurrence_count=None, due_date=None, reminder_date=None,
                     starred=False, completed=False, note=None):
         params = {
@@ -215,7 +201,7 @@ class MSToDo:
 
         return req
 
-    def update_task(self, task_id, revision, title=None, assignee_id=None, recurrence_type=None,
+    def update_task_raw(self, task_id, revision, title=None, assignee_id=None, recurrence_type=None,
                     recurrence_count=None, due_date=None, reminder_date=None, starred=None,
                     completed=None):
         params = {}
@@ -264,12 +250,12 @@ class MSToDo:
 
         return None
 
-    def delete_task(self, task_id, revision):
+    def delete_task_raw(self, task_id, revision):
         res = self._delete(f"me/outlook/tasks/{task_id}")
         return res
 
     # Other methods can be added similarly
-    def user(self):
+    def user_raw(self):
         req = self._get('me')
         return req.json()
 
