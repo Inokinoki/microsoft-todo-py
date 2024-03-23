@@ -82,7 +82,7 @@ class Body(BaseModel):
     content: str = Field(...)
 
 
-class TaskItem(BaseModel):
+class Task(BaseModel):
     id: UUID = Field(...)                                # Unique identifier (UUID) type
     created_date_time: datetime = Field(...)             # Datetime field representing creation timestamp
     last_modified_datetime: datetime = Field(...)        # Datetime field representing modification timestamp
