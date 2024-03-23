@@ -2,3 +2,4 @@ msal==1.22.0
 parsedatetime==2.6
 requests==2.31.0
 python-dateutil==2.8.2
+requests_toolbelt==1.0.0
