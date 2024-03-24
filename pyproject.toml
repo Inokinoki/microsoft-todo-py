@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mstodo"
+version = "0.2.3"
+dependencies = [
+  "annotated-types==0.6.0",
+  "parsedatetime==2.6",
+  "requests==2.31.0",
+  "pydantic==2.6.4",
+  "pydantic-core==2.16.3",
+  "python-dateutil==2.8.2",
+  "requests_toolbelt==1.0.0",
+]
+authors = [
+  {name = "Johan de Beurs"},
+  {name = "Ian Paterson"},
+  {name = "Inoki", email = "veyx.shaw@gmail.com"},
+]
+maintainers = [
+  {name = "Inoki", email = "veyx.shaw@gmail.com"}
+]
+description = "Microsoft To Do management library in Python"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["Microsoft To Do"]
+
+[project.urls]
+Homepage = "https://github.com/Inokinoki/microsoft-todo-py"
+Repository = "https://github.com/Inokinoki/microsoft-todo-py.git"
+
+[tool.setuptools]
+packages = ["mstodo"]
