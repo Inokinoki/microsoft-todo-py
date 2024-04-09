@@ -2,7 +2,7 @@
 Kindle can show Microsoft To Do
 """
 import base64
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import io
 import qrcode
 import msal
@@ -31,11 +31,12 @@ def index():
     auth_code_image.save(buffer)
     base64_image = base64.b64encode(buffer.getvalue()).decode()
     continue_url = f'{request.host_url}app?state={auth_code_flow["state"]}'
-    return '<div style="text-align: center; width: 100%;">' +\
-        f'<img src="data:image/png;base64,{base64_image}" alt="Login QR code"></p>' +\
-        '<p>请扫码登录您的 Microsoft™ 账号</p>' +\
-        f'<p>登陆完成后点击这里<a href="{continue_url}">继续</a>' +\
-        f'<br/><p>您的电纸书设备拥有完整版浏览器？请点击<a href="{url}">这里</a></p>'
+    return render_template(
+        'index.html',
+        base64_image=base64_image,
+        continue_url=continue_url,
+        url=url,
+    )
 
 
 @app.route("/auth_callback")
