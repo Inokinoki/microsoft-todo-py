@@ -52,6 +52,9 @@ def auth():
         auth_token_flow, auth_token_reply,
         data={"client_secret": CLIENT_SERCERT},
     )
+    if "access_token" not in res:
+        return f'<p>登陆失败</p><p>请<a href="{request.host_url}">重试</a></p>'
+
     # Kindle needs to get it later
     temp_res_mappings.update({state: res})
 
@@ -82,7 +85,10 @@ def auth_refresh():
         scopes=constant.MS_TODO_SCOPE,
         data={"client_secret": CLIENT_SERCERT},
     )
-    return f"Refresh auth to get the token: {res}"
+    if "access_token" not in res:
+        return jsonify(res), 401, {"Content-Type":"application/json"}
+
+    return jsonify(res), 200, {"Content-Type":"application/json"}
 
 
 @app.route("/app")
