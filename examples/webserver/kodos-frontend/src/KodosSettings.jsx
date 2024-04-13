@@ -11,6 +11,29 @@ function KodosSettings(props) {
       </div>
       <div>
         <h2>显示设置</h2>
+        {
+          // TODO: Add event listeners for radios and checkboxes
+          props.filters ? props.filters.map(
+            (filter) => {
+              return <>
+                <input type="radio" radioGroup='filter' name="filter" value={filter.name}/>
+                <label>{filter.description}</label>
+                <br/>
+                {
+                  filter.availableOptions && props.selectedFilter == filter.name ? filter.availableOptions.map(
+                    (option) => {
+                      return <>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <input type="checkbox" value={option}></input>
+                        <label>{option}</label>
+                        <br/>
+                      </>
+                    })
+                  : <></>
+                }
+              </>
+            }) : <p>没有可用的过滤条件，将显示全部项</p>
+        }
         <hr/>
         <input type="checkbox"/><label>显示完成按钮</label>
         <hr/>
