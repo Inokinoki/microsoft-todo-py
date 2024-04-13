@@ -1,7 +1,11 @@
+import './App.css'
 
 function KodosSettings(props) {
   return <>
     <div className="kodos-settings">
+      <div className="title-bar">
+        <h1>Kindle To Do - Kodos</h1>
+      </div>
       <div>
         <h2>账户</h2>
       </div>
@@ -21,6 +25,10 @@ function KodosSettings(props) {
           <option value="1800">30 分钟</option>
           <option value="3600">1 小时</option>
         </select>
+      </div>
+      <br/>
+      <div>
+        <button className="setting-button" onClick={() => props.back()}>关闭</button>
       </div>
     </div>
   </>

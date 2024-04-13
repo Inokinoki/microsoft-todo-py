@@ -21,3 +21,11 @@
   padding: 0px 5px 0px 5px;
   border: solid 1px black;
 }
+
+.title-bar {
+  text-align: center;
+}
+
+.setting-button {
+  width: 100%;
+}
