@@ -1,6 +1,18 @@
+import { useContext } from 'react'
+
 import './App.css'
 
+import UserContext from './User'
+import { logout } from './Utils'
+
+function doLogout() {
+  logout()
+  location.href = '/'
+}
+
 function KodosSettings(props) {
+  const user = useContext(UserContext)
+
   return <>
     <div className="kodos-settings">
       <div className="title-bar">
@@ -8,6 +20,13 @@ function KodosSettings(props) {
       </div>
       <div>
         <h2>账户</h2>
+        {user ? 
+          <>
+            <p>{"已登录为 " + user.name || user.preferred_username}</p>
+            <button onClick={doLogout}>退出登录</button>
+          </>
+          : <>"未登录"</>
+        }
       </div>
       <div>
         <h2>显示设置</h2>
