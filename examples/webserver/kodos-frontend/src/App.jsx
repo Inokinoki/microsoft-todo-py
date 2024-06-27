@@ -6,7 +6,7 @@ import KodosSettings from './KodosSettings'
 
 import baseURL from './URL.js'
 import UserContext from './User'
-import { login } from './Utils'
+import { login, getAuth } from './Utils'
 
 function getParameterByName(name, url = window.location.href) {
   name = name.replace(/[\[\]]/g, '\\$&');
@@ -19,7 +19,7 @@ function getParameterByName(name, url = window.location.href) {
 
 function parseAndSetAuthInfo(setter, authInfo) {
   setter(authInfo)
-  login(authInfo)
+  login(JSON.stringify(authInfo))
 }
 
 function App() {
@@ -50,6 +50,16 @@ function App() {
     if (!authInfo) {
       setLoading(true)
       // TODO: Load from local storage
+      try {
+        const authInfo = JSON.parse(getAuth())
+        if (authInfo) {
+          parseAndSetAuthInfo(setAuthInfo, authInfo)
+          return
+        }
+      } catch (error) {
+        console.warn("Failed to parse auth info from local storage: " + error)
+      }
+
       const state = getParameterByName("state")
       if (state) {
         loadUser(state)
