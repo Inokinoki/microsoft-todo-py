@@ -73,19 +73,13 @@ function App() {
       {
         authInfo ?
         <>
-          <UserContext.Provider value={authInfo.id_token_claims}>
+          <UserContext.Provider value={authInfo}>
             {
               isApp ?
-                <Kodos count={count} /> :
+                <Kodos count={count} goSetting={() => goApp(!isApp)} /> :
                 <KodosSettings filters={[{name: "date", description: "截止日期", availableOptions: ["true", "false"]}, {name: "like", description: "收藏", availableOptions: ["true", "false"]}]} selectedFilter={"date"} back={goBackToApp} />
             }
           </UserContext.Provider>
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is {count}
-          </button>
-          <button onClick={ () => goApp(!isApp) }>
-            Siwtch
-          </button>
         </> :
         <>
           <div>

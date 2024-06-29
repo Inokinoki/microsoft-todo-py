@@ -22,7 +22,7 @@ function KodosSettings(props) {
         <h2>账户</h2>
         {user ? 
           <>
-            <p>{"已登录为 " + user.name || user.preferred_username}</p>
+            <p>{"已登录为 " + (user.id_token_claims.name || user.id_token_claims.preferred_username)}</p>
             <button onClick={doLogout}>退出登录</button>
           </>
           : <>"未登录"</>
@@ -56,8 +56,8 @@ function KodosSettings(props) {
         <hr/>
         <input type="checkbox"/><label>显示完成按钮</label>
         <hr/>
-        <label>刷新频率：</label>
-        <select>
+        <label>刷新频率（决定耗电量）：</label>
+        <select onChange={event => console.log(event.target.value)}>
           <option value="10">10 秒</option>
           <option value="30">30 秒</option>
           <option value="60">1 分钟</option>
@@ -69,8 +69,8 @@ function KodosSettings(props) {
         </select>
       </div>
       <br/>
-      <div>
-        <button className="setting-button" onClick={() => props.back()}>关闭</button>
+      <div className="bottom-button">
+        <button type="button" className="setting-button" onClick={() => props.back()}>关闭</button>
       </div>
     </div>
   </>
