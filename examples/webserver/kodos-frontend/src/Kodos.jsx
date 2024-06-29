@@ -2,7 +2,8 @@ import KodosItem from './KodosItem'
 
 import UserContext from './User'
 
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useState } from 'react'
+import { logout } from './Utils'
 
 
 function Kodos(props) {
@@ -11,6 +12,8 @@ function Kodos(props) {
   const [todayTasks, setTodayTasks] = useState([])
   const [importantTasks, setImportantTasks] = useState([])
   const [ddlTasks, setDDLTasks] = useState([])
+  const [currentTimeoutTask, setCurrentTimeoutTask] = useState(null)
+  const [currentTimeout, setCurrentTimeout] = useState(null)
 
   function get_tasks(token, isImportant, isToday, isDDL) {
     var queryString = "status+ne+'completed'"
@@ -26,7 +29,17 @@ function Kodos(props) {
         "Content-Type": "application/json"
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      if (res.status == 401) {
+        // Require reloading
+        logout()
+        return
+      } else if (res.status == 200) {
+        return res.json()
+      } else {
+        throw res
+      }
+    })
     .then(
       res => {
         if (isToday) {
@@ -52,17 +65,34 @@ function Kodos(props) {
     )
     .catch(err => console.log(err))
   }
-  useEffect(() => {
+
+  function refresh() {
     get_tasks(user.access_token, true, false, false)
     get_tasks(user.access_token, false, true, true)
-  }, [user])
+    if (currentTimeout != props.refreshRate) {
+      setCurrentTimeout(props.refreshRate)
+      if (currentTimeoutTask) {
+        clearTimeout(currentTimeoutTask)
+      }
+      console.log("Setting timeout task in ", props.refreshRate)
+      setCurrentTimeoutTask(setTimeout(refresh, (props.refreshRate ? props.refreshRate : 60) * 1000))
+    } else {
+      console.log("Setting timeout without refresh task in ", props.refreshRate)
+      setCurrentTimeoutTask(setTimeout(refresh, (props.refreshRate ? props.refreshRate : 60) * 1000))
+    }
+  }
+
+  useEffect(() => refresh(), [user])
+
+  useLayoutEffect(() => {
+    if (currentTimeoutTask) {
+      clearTimeout(currentTimeoutTask)
+    }
+  })
 
   return <>
     <div className="bottom-button">
-      <button type="button" className="setting-button" onClick={ () => {
-        get_tasks(user.access_token, true, false, false)
-        get_tasks(user.access_token, false, true, true)
-      } }>
+      <button type="button" className="setting-button" onClick={ () => refresh() }>
         刷新
       </button>
       <button type="button" className="setting-button" onClick={ () => props.goSetting() }>
@@ -74,7 +104,7 @@ function Kodos(props) {
       <div className="kodos-list">
       {
         todayTasks.length > 0 ? todayTasks.map(function (task, i) {
-          return <KodosItem task={task} />;
+          return <KodosItem key={"today_" + i} task={task} />;
         }) : <p>暂无</p>
       }
       </div>
@@ -82,7 +112,7 @@ function Kodos(props) {
       <div className="kodos-list">
       {
         importantTasks.length > 0 ? importantTasks.map(function (task, i) {
-          return <KodosItem task={task} />;
+          return <KodosItem key={"important_" + i} task={task} />;
         }) : <p>暂无</p>
       }
       </div>
@@ -90,7 +120,7 @@ function Kodos(props) {
       <div className="kodos-list">
       {
         ddlTasks.length > 0 ? ddlTasks.map(function (task, i) {
-          return <KodosItem task={task} showDDL={true} />;
+          return <KodosItem key={"ddl_" + i} task={task} showDDL={true} />;
         }) : <p>暂无</p>
       }
       </div>

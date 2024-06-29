@@ -24,9 +24,10 @@ function parseAndSetAuthInfo(setter, authInfo) {
 
 function App() {
   const [count, setCount] = useState(0)
-  const [isApp, goApp] = useState(false)
+  const [isApp, goApp] = useState(true)
   const [authInfo, setAuthInfo] = useState(null)
   const [isLoading, setLoading] = useState(true)
+  const [refreshRate, setRefreshRate] = useState(60)
 
   const goBackToApp = () => {
     goApp(true)
@@ -49,7 +50,7 @@ function App() {
   useEffect(() => {
     if (!authInfo) {
       setLoading(true)
-      // TODO: Load from local storage
+      // Load from local storage
       try {
         const authInfo = JSON.parse(getAuth())
         if (authInfo) {
@@ -76,8 +77,8 @@ function App() {
           <UserContext.Provider value={authInfo}>
             {
               isApp ?
-                <Kodos count={count} goSetting={() => goApp(!isApp)} /> :
-                <KodosSettings filters={[{name: "date", description: "截止日期", availableOptions: ["true", "false"]}, {name: "like", description: "收藏", availableOptions: ["true", "false"]}]} selectedFilter={"date"} back={goBackToApp} />
+                <Kodos refreshRate={refreshRate} count={count} goSetting={() => goApp(!isApp)} /> :
+                <KodosSettings setRefreshRate={setRefreshRate} filters={[{name: "date", description: "截止日期", availableOptions: ["true", "false"]}, {name: "like", description: "收藏", availableOptions: ["true", "false"]}]} selectedFilter={"date"} back={goBackToApp} />
             }
           </UserContext.Provider>
         </> :

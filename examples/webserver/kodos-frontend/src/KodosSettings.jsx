@@ -30,7 +30,7 @@ function KodosSettings(props) {
       </div>
       <div>
         <h2>显示设置</h2>
-        {
+        {/* {
           // TODO: Add event listeners for radios and checkboxes
           props.filters ? props.filters.map(
             (filter) => {
@@ -55,9 +55,9 @@ function KodosSettings(props) {
         }
         <hr/>
         <input type="checkbox"/><label>显示完成按钮</label>
-        <hr/>
+        <hr/> */}
         <label>刷新频率（决定耗电量）：</label>
-        <select onChange={event => console.log(event.target.value)}>
+        <select onChange={event => props.setRefreshRate(new Number(event.target.value)) }>
           <option value="10">10 秒</option>
           <option value="30">30 秒</option>
           <option value="60">1 分钟</option>
